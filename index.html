@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica de inglés — Grupo 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2F4F7;
+    --card: #FFFFFF;
+    --ink: #1C222B;
+    --ink-soft: #4B5563;
+    --navy: #16233D;
+    --accent: #2E74B5;
+    --accent-soft: #E7EFF7;
+    --good: #2E7D32;
+    --good-soft: #E9F5EA;
+    --bad: #B3261E;
+    --bad-soft: #FBEAEA;
+    --line: #DDE2E9;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(242, 244, 247, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .topbar-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--navy);
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+
+  .progress-bar {
+    width: 90px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  header.hero {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 8px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(26px, 4.5vw, 36px);
+    color: var(--navy);
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .instructions {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0 auto;
+    max-width: 520px;
+  }
+
+  main {
+    flex: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 20px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .page[hidden] {
+    display: none;
+  }
+
+  .text-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .passage {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--accent-soft);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+
+  .active-blank {
+    background: var(--navy);
+    color: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    margin: 0 2px;
+  }
+
+  .inactive-blank {
+    color: #9CA3AF;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .exercise-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 28px 24px;
+    box-shadow: 0 1px 2px rgba(20, 30, 50, 0.05);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-head {
+    margin-bottom: 16px;
+  }
+
+  .ex-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .q-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+  }
+
+  .opt:hover { border-color: var(--accent); }
+
+  .opt.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .opt-letter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-right: 6px;
+  }
+
+  .opt.correct-reveal {
+    border-color: var(--good);
+    background: var(--good-soft);
+  }
+  .opt.correct-reveal .opt-letter { color: var(--good); }
+
+  .opt.incorrect-reveal {
+    border-color: var(--bad);
+    background: var(--bad-soft);
+  }
+  .opt.incorrect-reveal .opt-letter { color: var(--bad); }
+
+  .q-footer {
+    margin-top: auto;
+  }
+
+  .reveal-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .reveal-btn:hover { background: var(--accent-soft); }
+
+  .reveal-btn[data-state="shown"] {
+    color: var(--ink-soft);
+    border-color: var(--line);
+  }
+
+  .answer-panel {
+    margin-top: 14px;
+    background: var(--good-soft);
+    border-left: 3px solid var(--good);
+    border-radius: 6px;
+    padding: 12px 16px;
+  }
+
+  .justificacion {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .just-label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--good);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .pager-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--navy);
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pager-btn:disabled {
+    background: var(--line);
+    color: #9CA3AF;
+    cursor: not-allowed;
+  }
+
+  .pager-btn:not(:disabled):hover { background: var(--accent); }
+
+  .pager-jump {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pager-jump input {
+    width: 46px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4px 20px 32px;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .exercise-card { padding: 20px 18px 18px; }
+    .passage { font-size: 15.5px; padding: 16px 18px; }
+    .pager { flex-wrap: wrap; }
+    .pager-jump { order: 3; width: 100%; justify-content: center; margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span class="topbar-title">Grupo 2 · Práctica de inglés</span>
+    <div class="progress-wrap">
+      <span id="progress-label">0 / 40 revisadas</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <span class="eyebrow">Práctica de inglés · Grupo 2 de 4</span>
+    <h1>40 ejercicios de cloze para practicar</h1>
+    <p class="instructions">
+      Lee el fragmento de texto y elige la opción correcta para el espacio resaltado.
+      Pulsa <strong>Ver respuesta</strong> para comprobarla y leer la justificación.
+    </p>
+  </header>
+
+  <main>
+    
+  <section class="page" data-index="0" >
+    <div class="text-tag">Texto 1 de 8 · Exercise and Mental Health</div>
+    <div class="passage">Many people decide to <mark class="active-blank">(1)</mark> jogging as a way to manage stress, even if they&#39;ve never exercised regularly before. A single workout session <span class="inactive-blank">____</span> not transform someone&#39;s mood permanently, but the cumulative effect over weeks is well documented. <span class="inactive-blank">____</span> motivation tends to fade after the first few sessions, setting a fixed schedule can make a real difference. Staying <span class="inactive-blank">____</span> a routine, even on days without much energy, is often what separates lasting habits from short-lived resolutions. <span class="inactive-blank">____</span> consistent someone is, the more natural exercise eventually becomes.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 1 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">take up</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">take over</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">take off</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Take up&#39; + actividad significa comenzar un nuevo hobby o práctica (&#39;take up jogging&#39;). &#39;Take off&#39; significa despegar o quitarse algo, y &#39;take over&#39; significa asumir el control de algo; ninguno encaja con el sentido de empezar una nueva actividad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="1" hidden>
+    <div class="text-tag">Texto 1 de 8 · Exercise and Mental Health</div>
+    <div class="passage">Many people decide to <span class="inactive-blank">____</span> jogging as a way to manage stress, even if they&#39;ve never exercised regularly before. A single workout session <mark class="active-blank">(2)</mark> not transform someone&#39;s mood permanently, but the cumulative effect over weeks is well documented. <span class="inactive-blank">____</span> motivation tends to fade after the first few sessions, setting a fixed schedule can make a real difference. Staying <span class="inactive-blank">____</span> a routine, even on days without much energy, is often what separates lasting habits from short-lived resolutions. <span class="inactive-blank">____</span> consistent someone is, the more natural exercise eventually becomes.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 2 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">must</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">may</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">shall</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;May&#39; expresa una posibilidad moderada y formal (&#39;puede que no transforme&#39;), apropiada para matizar una afirmación científica. &#39;Must&#39; impondría una certeza que el texto no respalda, y &#39;shall&#39; es demasiado formal/arcaico para expresar posibilidad aquí.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="2" hidden>
+    <div class="text-tag">Texto 1 de 8 · Exercise and Mental Health</div>
+    <div class="passage">Many people decide to <span class="inactive-blank">____</span> jogging as a way to manage stress, even if they&#39;ve never exercised regularly before. A single workout session <span class="inactive-blank">____</span> not transform someone&#39;s mood permanently, but the cumulative effect over weeks is well documented. <mark class="active-blank">(3)</mark> motivation tends to fade after the first few sessions, setting a fixed schedule can make a real difference. Staying <span class="inactive-blank">____</span> a routine, even on days without much energy, is often what separates lasting habits from short-lived resolutions. <span class="inactive-blank">____</span> consistent someone is, the more natural exercise eventually becomes.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 3 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">Unless</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">Since</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">Despite</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Since&#39; funciona como conector causal (= &#39;ya que&#39;), introduciendo la razón por la que fijar un horario ayuda. &#39;Despite&#39; necesitaría un sustantivo, no una cláusula completa, y &#39;unless&#39; introduciría una condición negativa que cambia el sentido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="3" hidden>
+    <div class="text-tag">Texto 1 de 8 · Exercise and Mental Health</div>
+    <div class="passage">Many people decide to <span class="inactive-blank">____</span> jogging as a way to manage stress, even if they&#39;ve never exercised regularly before. A single workout session <span class="inactive-blank">____</span> not transform someone&#39;s mood permanently, but the cumulative effect over weeks is well documented. <span class="inactive-blank">____</span> motivation tends to fade after the first few sessions, setting a fixed schedule can make a real difference. Staying <mark class="active-blank">(4)</mark> a routine, even on days without much energy, is often what separates lasting habits from short-lived resolutions. <span class="inactive-blank">____</span> consistent someone is, the more natural exercise eventually becomes.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 4 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">committed on</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">committed to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">committed at</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;committed to something&#39; (comprometido con algo). &#39;Committed on&#39; y &#39;committed at&#39; no son combinaciones válidas en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="4" hidden>
+    <div class="text-tag">Texto 1 de 8 · Exercise and Mental Health</div>
+    <div class="passage">Many people decide to <span class="inactive-blank">____</span> jogging as a way to manage stress, even if they&#39;ve never exercised regularly before. A single workout session <span class="inactive-blank">____</span> not transform someone&#39;s mood permanently, but the cumulative effect over weeks is well documented. <span class="inactive-blank">____</span> motivation tends to fade after the first few sessions, setting a fixed schedule can make a real difference. Staying <span class="inactive-blank">____</span> a routine, even on days without much energy, is often what separates lasting habits from short-lived resolutions. <mark class="active-blank">(5)</mark> consistent someone is, the more natural exercise eventually becomes.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 5 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">The more</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">So more</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">As more</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Estructura fija de proporción doble: &#39;The more X, the more Y&#39; (cuanto más... más...). &#39;As more&#39; y &#39;so more&#39; no forman esta construcción gramatical establecida.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="5" hidden>
+    <div class="text-tag">Texto 2 de 8 · Personal Budgeting</div>
+    <div class="passage">Many financial advisors recommend that people <mark class="active-blank">(6)</mark> non-essential spending before trying to save aggressively. Few people are fully <span class="inactive-blank">____</span> how small daily purchases add up over a month. Building an emergency fund requires <span class="inactive-blank">____</span> discipline, especially for those living paycheck to paycheck. Financial experts argue that everyone <span class="inactive-blank">____</span> have at least three months of expenses saved, though this isn&#39;t always realistic. <span class="inactive-blank">____</span> budgeting feels restrictive at first, most people find it becomes second nature within a few months.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 6 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">cut back on</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">cut off</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">cut across</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Cut back on&#39; significa reducir el consumo de algo de forma gradual. &#39;Cut off&#39; significa interrumpir por completo algo repentinamente, y &#39;cut across&#39; significa atravesar o ir en contra de algo; ninguno coincide con reducir gastos progresivamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="6" hidden>
+    <div class="text-tag">Texto 2 de 8 · Personal Budgeting</div>
+    <div class="passage">Many financial advisors recommend that people <span class="inactive-blank">____</span> non-essential spending before trying to save aggressively. Few people are fully <mark class="active-blank">(7)</mark> how small daily purchases add up over a month. Building an emergency fund requires <span class="inactive-blank">____</span> discipline, especially for those living paycheck to paycheck. Financial experts argue that everyone <span class="inactive-blank">____</span> have at least three months of expenses saved, though this isn&#39;t always realistic. <span class="inactive-blank">____</span> budgeting feels restrictive at first, most people find it becomes second nature within a few months.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 7 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">aware with</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">aware of</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">aware for</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;aware of something&#39;. &#39;Aware for&#39; y &#39;aware with&#39; no son combinaciones válidas en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="7" hidden>
+    <div class="text-tag">Texto 2 de 8 · Personal Budgeting</div>
+    <div class="passage">Many financial advisors recommend that people <span class="inactive-blank">____</span> non-essential spending before trying to save aggressively. Few people are fully <span class="inactive-blank">____</span> how small daily purchases add up over a month. Building an emergency fund requires <mark class="active-blank">(8)</mark> discipline, especially for those living paycheck to paycheck. Financial experts argue that everyone <span class="inactive-blank">____</span> have at least three months of expenses saved, though this isn&#39;t always realistic. <span class="inactive-blank">____</span> budgeting feels restrictive at first, most people find it becomes second nature within a few months.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 8 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">a great number of</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">a great deal</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">a great deal of</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;A great deal of&#39; + sustantivo incontable (&#39;discipline&#39;) expresa una gran cantidad. &#39;A great deal&#39; sin &#39;of&#39; no puede preceder directamente a un sustantivo, y &#39;a great number of&#39; se usa con sustantivos contables, no incontables.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="8" hidden>
+    <div class="text-tag">Texto 2 de 8 · Personal Budgeting</div>
+    <div class="passage">Many financial advisors recommend that people <span class="inactive-blank">____</span> non-essential spending before trying to save aggressively. Few people are fully <span class="inactive-blank">____</span> how small daily purchases add up over a month. Building an emergency fund requires <span class="inactive-blank">____</span> discipline, especially for those living paycheck to paycheck. Financial experts argue that everyone <mark class="active-blank">(9)</mark> have at least three months of expenses saved, though this isn&#39;t always realistic. <span class="inactive-blank">____</span> budgeting feels restrictive at first, most people find it becomes second nature within a few months.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 9 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">ought of</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">ought to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">ought</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Ought to&#39; es la forma correcta de este modal, que siempre lleva &#39;to&#39; antes del verbo. &#39;Ought&#39; solo es gramaticalmente incompleto, y &#39;ought of&#39; no existe en inglés estándar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="9" hidden>
+    <div class="text-tag">Texto 2 de 8 · Personal Budgeting</div>
+    <div class="passage">Many financial advisors recommend that people <span class="inactive-blank">____</span> non-essential spending before trying to save aggressively. Few people are fully <span class="inactive-blank">____</span> how small daily purchases add up over a month. Building an emergency fund requires <span class="inactive-blank">____</span> discipline, especially for those living paycheck to paycheck. Financial experts argue that everyone <span class="inactive-blank">____</span> have at least three months of expenses saved, though this isn&#39;t always realistic. <mark class="active-blank">(10)</mark> budgeting feels restrictive at first, most people find it becomes second nature within a few months.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 10 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">Due to</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">Even though</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">Despite</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Even though&#39; + cláusula completa (&#39;budgeting feels restrictive&#39;) introduce un contraste. &#39;Despite&#39; y &#39;due to&#39; exigen un sustantivo, no una oración con sujeto y verbo conjugado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="10" hidden>
+    <div class="text-tag">Texto 3 de 8 · Climate Change Awareness</div>
+    <div class="passage">Global temperature data <mark class="active-blank">(11)</mark> collected and analyzed by research stations around the world every single day. Coastal communities, <span class="inactive-blank">____</span> livelihoods depend heavily on fishing, are among the most vulnerable to rising sea levels. Countries that invest early in clean energy tend to produce <span class="inactive-blank">____</span> emissions than those that delay action. <span class="inactive-blank">____</span> governments commit to binding targets, meaningful progress remains possible within the next few decades. Many scientists consider the next ten years <span class="inactive-blank">____</span> for reversing the worst effects of climate change.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 11 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">is being</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">was being</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">has been</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Presente continuo pasivo para describir una acción en curso ahora mismo (&#39;is being collected&#39;). &#39;Has been&#39; formaría presente perfecto pasivo (acción completada, no continua), y &#39;was being&#39; ubicaría la acción en el pasado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="11" hidden>
+    <div class="text-tag">Texto 3 de 8 · Climate Change Awareness</div>
+    <div class="passage">Global temperature data <span class="inactive-blank">____</span> collected and analyzed by research stations around the world every single day. Coastal communities, <mark class="active-blank">(12)</mark> livelihoods depend heavily on fishing, are among the most vulnerable to rising sea levels. Countries that invest early in clean energy tend to produce <span class="inactive-blank">____</span> emissions than those that delay action. <span class="inactive-blank">____</span> governments commit to binding targets, meaningful progress remains possible within the next few decades. Many scientists consider the next ten years <span class="inactive-blank">____</span> for reversing the worst effects of climate change.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 12 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">which</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">whose</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">who</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Whose&#39; indica posesión (&#39;livelihoods&#39; pertenece a las comunidades costeras). &#39;Which&#39; no puede mostrar posesión de esta manera, y &#39;who&#39; se usaría solo si el sustantivo siguiente no fuera posesivo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="12" hidden>
+    <div class="text-tag">Texto 3 de 8 · Climate Change Awareness</div>
+    <div class="passage">Global temperature data <span class="inactive-blank">____</span> collected and analyzed by research stations around the world every single day. Coastal communities, <span class="inactive-blank">____</span> livelihoods depend heavily on fishing, are among the most vulnerable to rising sea levels. Countries that invest early in clean energy tend to produce <mark class="active-blank">(13)</mark> emissions than those that delay action. <span class="inactive-blank">____</span> governments commit to binding targets, meaningful progress remains possible within the next few decades. Many scientists consider the next ten years <span class="inactive-blank">____</span> for reversing the worst effects of climate change.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 13 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">far fewer</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">far most</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">far less</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Emissions&#39; es un sustantivo contable en plural, así que se necesita &#39;fewer&#39; (reforzado por &#39;far&#39; para enfatizar la diferencia). &#39;Less&#39; se usa con incontables, y &#39;far most&#39; no es una construcción gramatical válida.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="13" hidden>
+    <div class="text-tag">Texto 3 de 8 · Climate Change Awareness</div>
+    <div class="passage">Global temperature data <span class="inactive-blank">____</span> collected and analyzed by research stations around the world every single day. Coastal communities, <span class="inactive-blank">____</span> livelihoods depend heavily on fishing, are among the most vulnerable to rising sea levels. Countries that invest early in clean energy tend to produce <span class="inactive-blank">____</span> emissions than those that delay action. <mark class="active-blank">(14)</mark> governments commit to binding targets, meaningful progress remains possible within the next few decades. Many scientists consider the next ten years <span class="inactive-blank">____</span> for reversing the worst effects of climate change.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 14 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">Provided that</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">Despite</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">Because of</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Provided that&#39; (siempre que) introduce una condición necesaria para que algo ocurra, seguida de cláusula completa. &#39;Despite&#39; y &#39;because of&#39; expresan contraste o causa, no condición.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="14" hidden>
+    <div class="text-tag">Texto 3 de 8 · Climate Change Awareness</div>
+    <div class="passage">Global temperature data <span class="inactive-blank">____</span> collected and analyzed by research stations around the world every single day. Coastal communities, <span class="inactive-blank">____</span> livelihoods depend heavily on fishing, are among the most vulnerable to rising sea levels. Countries that invest early in clean energy tend to produce <span class="inactive-blank">____</span> emissions than those that delay action. <span class="inactive-blank">____</span> governments commit to binding targets, meaningful progress remains possible within the next few decades. Many scientists consider the next ten years <mark class="active-blank">(15)</mark> for reversing the worst effects of climate change.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 15 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">a leading edge</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">a turning point</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">a breaking news</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;A turning point&#39; es la expresión fija para un momento decisivo que cambia el curso de los eventos. Las otras dos combinaciones no son expresiones idiomáticas reconocidas en inglés con ese sentido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="15" hidden>
+    <div class="text-tag">Texto 4 de 8 · Artificial Intelligence in Daily Life</div>
+    <div class="passage">Engineers constantly <mark class="active-blank">(16)</mark> new ways to make AI systems more efficient and easier to use. Some tasks that once required hours of human effort <span class="inactive-blank">____</span> now be completed by algorithms in seconds. Traditional software follows fixed rules, <span class="inactive-blank">____</span> machine learning systems adjust their behavior based on data. Modern AI models are increasingly <span class="inactive-blank">____</span> recognizing patterns that even trained professionals sometimes miss. Each new system <span class="inactive-blank">____</span> specifically for a narrow purpose, which limits its usefulness outside that original task.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 16 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">come along</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">come across</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">come up with</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Come up with&#39; significa idear o proponer algo nuevo. &#39;Come across&#39; significa encontrar algo por casualidad, y &#39;come along&#39; significa progresar o acompañar; ninguno encaja con el sentido de generar ideas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="16" hidden>
+    <div class="text-tag">Texto 4 de 8 · Artificial Intelligence in Daily Life</div>
+    <div class="passage">Engineers constantly <span class="inactive-blank">____</span> new ways to make AI systems more efficient and easier to use. Some tasks that once required hours of human effort <mark class="active-blank">(17)</mark> now be completed by algorithms in seconds. Traditional software follows fixed rules, <span class="inactive-blank">____</span> machine learning systems adjust their behavior based on data. Modern AI models are increasingly <span class="inactive-blank">____</span> recognizing patterns that even trained professionals sometimes miss. Each new system <span class="inactive-blank">____</span> specifically for a narrow purpose, which limits its usefulness outside that original task.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 17 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">might</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">must</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">shall</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Might&#39; expresa una posibilidad, sin la certeza de &#39;must&#39; ni el tono arcaico/formal de &#39;shall&#39;, que no encajan con el matiz de posibilidad de esta oración.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="17" hidden>
+    <div class="text-tag">Texto 4 de 8 · Artificial Intelligence in Daily Life</div>
+    <div class="passage">Engineers constantly <span class="inactive-blank">____</span> new ways to make AI systems more efficient and easier to use. Some tasks that once required hours of human effort <span class="inactive-blank">____</span> now be completed by algorithms in seconds. Traditional software follows fixed rules, <mark class="active-blank">(18)</mark> machine learning systems adjust their behavior based on data. Modern AI models are increasingly <span class="inactive-blank">____</span> recognizing patterns that even trained professionals sometimes miss. Each new system <span class="inactive-blank">____</span> specifically for a narrow purpose, which limits its usefulness outside that original task.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 18 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">whereas</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">despite</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">because</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Whereas&#39; contrasta directamente dos ideas opuestas dentro de la misma oración (reglas fijas frente a sistemas que se adaptan). &#39;Despite&#39; necesitaría un sustantivo y &#39;because&#39; cambiaría la relación lógica hacia una causa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="18" hidden>
+    <div class="text-tag">Texto 4 de 8 · Artificial Intelligence in Daily Life</div>
+    <div class="passage">Engineers constantly <span class="inactive-blank">____</span> new ways to make AI systems more efficient and easier to use. Some tasks that once required hours of human effort <span class="inactive-blank">____</span> now be completed by algorithms in seconds. Traditional software follows fixed rules, <span class="inactive-blank">____</span> machine learning systems adjust their behavior based on data. Modern AI models are increasingly <mark class="active-blank">(19)</mark> recognizing patterns that even trained professionals sometimes miss. Each new system <span class="inactive-blank">____</span> specifically for a narrow purpose, which limits its usefulness outside that original task.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 19 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">capable of</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">capable to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">capable for</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;capable of doing something&#39;. &#39;Capable for&#39; y &#39;capable to&#39; no son combinaciones válidas en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="19" hidden>
+    <div class="text-tag">Texto 4 de 8 · Artificial Intelligence in Daily Life</div>
+    <div class="passage">Engineers constantly <span class="inactive-blank">____</span> new ways to make AI systems more efficient and easier to use. Some tasks that once required hours of human effort <span class="inactive-blank">____</span> now be completed by algorithms in seconds. Traditional software follows fixed rules, <span class="inactive-blank">____</span> machine learning systems adjust their behavior based on data. Modern AI models are increasingly <span class="inactive-blank">____</span> recognizing patterns that even trained professionals sometimes miss. Each new system <mark class="active-blank">(20)</mark> specifically for a narrow purpose, which limits its usefulness outside that original task.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 20 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">has designed</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">has being designed</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">has been designed</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Voz pasiva en presente perfecto: &#39;has been&#39; + participio (&#39;designed&#39;), ya que el sistema recibe la acción. &#39;Has designed&#39; sería voz activa (incorrecta aquí) y &#39;has being designed&#39; es gramaticalmente inválido en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="20" hidden>
+    <div class="text-tag">Texto 5 de 8 · Reading Habits in the Digital Age</div>
+    <div class="passage">Many readers <mark class="active-blank">(21)</mark> starting a new book for weeks, waiting for the &#39;right moment&#39; that rarely comes. <span class="inactive-blank">____</span> e-readers and audiobook apps are widely available, there&#39;s rarely a good excuse for not fitting reading into a busy schedule. Surveys suggest that people who read before bed fall asleep <span class="inactive-blank">____</span> quickly as those who scroll through their phones. Publishers have noticed that younger readers seem particularly <span class="inactive-blank">____</span> serialized fiction released in short chapters. Online reading communities, <span class="inactive-blank">____</span> readers discuss chapters as they&#39;re published, have become surprisingly popular among teenagers.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 21 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">put down</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">put up</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">put off</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Put off&#39; significa posponer algo. &#39;Put up&#39; tiene sentido de instalar o alojar, y &#39;put down&#39; significa dejar algo físicamente o menospreciar a alguien; ninguno encaja con posponer una actividad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="21" hidden>
+    <div class="text-tag">Texto 5 de 8 · Reading Habits in the Digital Age</div>
+    <div class="passage">Many readers <span class="inactive-blank">____</span> starting a new book for weeks, waiting for the &#39;right moment&#39; that rarely comes. <mark class="active-blank">(22)</mark> e-readers and audiobook apps are widely available, there&#39;s rarely a good excuse for not fitting reading into a busy schedule. Surveys suggest that people who read before bed fall asleep <span class="inactive-blank">____</span> quickly as those who scroll through their phones. Publishers have noticed that younger readers seem particularly <span class="inactive-blank">____</span> serialized fiction released in short chapters. Online reading communities, <span class="inactive-blank">____</span> readers discuss chapters as they&#39;re published, have become surprisingly popular among teenagers.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 22 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">Unless</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">Now that</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">Despite</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Now that&#39; (ahora que) introduce una razón basada en una situación actual, seguida de cláusula completa. &#39;Despite&#39; exigiría un sustantivo y &#39;unless&#39; introduciría una condición negativa que cambia el sentido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="22" hidden>
+    <div class="text-tag">Texto 5 de 8 · Reading Habits in the Digital Age</div>
+    <div class="passage">Many readers <span class="inactive-blank">____</span> starting a new book for weeks, waiting for the &#39;right moment&#39; that rarely comes. <span class="inactive-blank">____</span> e-readers and audiobook apps are widely available, there&#39;s rarely a good excuse for not fitting reading into a busy schedule. Surveys suggest that people who read before bed fall asleep <mark class="active-blank">(23)</mark> quickly as those who scroll through their phones. Publishers have noticed that younger readers seem particularly <span class="inactive-blank">____</span> serialized fiction released in short chapters. Online reading communities, <span class="inactive-blank">____</span> readers discuss chapters as they&#39;re published, have become surprisingly popular among teenagers.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 23 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">twice as</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">twice more</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">two times more</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Twice as + adjetivo/adverbio + as&#39; es la estructura fija para comparar el doble de algo. &#39;Two times more&#39; y &#39;twice more&#39; no siguen la construcción gramatical correcta para este tipo de comparación.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="23" hidden>
+    <div class="text-tag">Texto 5 de 8 · Reading Habits in the Digital Age</div>
+    <div class="passage">Many readers <span class="inactive-blank">____</span> starting a new book for weeks, waiting for the &#39;right moment&#39; that rarely comes. <span class="inactive-blank">____</span> e-readers and audiobook apps are widely available, there&#39;s rarely a good excuse for not fitting reading into a busy schedule. Surveys suggest that people who read before bed fall asleep <span class="inactive-blank">____</span> quickly as those who scroll through their phones. Publishers have noticed that younger readers seem particularly <mark class="active-blank">(24)</mark> serialized fiction released in short chapters. Online reading communities, <span class="inactive-blank">____</span> readers discuss chapters as they&#39;re published, have become surprisingly popular among teenagers.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 24 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">keen for</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">keen to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">keen on</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;keen on something&#39; (entusiasmado por algo). &#39;Keen for&#39; no es una combinación estándar, y &#39;keen to&#39; se usaría antes de un verbo en infinitivo, no antes de un sustantivo como &#39;fiction&#39;.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="24" hidden>
+    <div class="text-tag">Texto 5 de 8 · Reading Habits in the Digital Age</div>
+    <div class="passage">Many readers <span class="inactive-blank">____</span> starting a new book for weeks, waiting for the &#39;right moment&#39; that rarely comes. <span class="inactive-blank">____</span> e-readers and audiobook apps are widely available, there&#39;s rarely a good excuse for not fitting reading into a busy schedule. Surveys suggest that people who read before bed fall asleep <span class="inactive-blank">____</span> quickly as those who scroll through their phones. Publishers have noticed that younger readers seem particularly <span class="inactive-blank">____</span> serialized fiction released in short chapters. Online reading communities, <mark class="active-blank">(25)</mark> readers discuss chapters as they&#39;re published, have become surprisingly popular among teenagers.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 25 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">which</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">that</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">where</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Where&#39; introduce una cláusula relativa que se refiere a un lugar (aquí, la comunidad como espacio de encuentro). &#39;Which&#39; se usaría para referirse a la comunidad como cosa sin indicar lugar, y &#39;that&#39; no puede usarse tras una coma en una cláusula no restrictiva.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="25" hidden>
+    <div class="text-tag">Texto 6 de 8 · Urban Public Transportation</div>
+    <div class="passage">Several cities have recently <mark class="active-blank">(26)</mark> bike-sharing programs to give commuters more flexible transportation options. <span class="inactive-blank">____</span> fare prices remain affordable, public transit ridership tends to stay stable even during economic downturns. Many of the oldest subway lines in major cities <span class="inactive-blank">____</span> more than a century ago, long before today&#39;s population levels were even imagined. Public opinion in several surveys has shifted increasingly <span class="inactive-blank">____</span> expanding rail networks rather than building new highways. City planners argue that infrastructure investment <span class="inactive-blank">____</span> keep pace with population growth to avoid worsening congestion.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 26 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">set up</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">set off</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">set out</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Set up&#39; significa establecer o poner en marcha algo nuevo. &#39;Set off&#39; significa partir hacia algún lugar o hacer explotar algo, y &#39;set out&#39; significa iniciar un viaje o plan; ninguno coincide con crear un programa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="26" hidden>
+    <div class="text-tag">Texto 6 de 8 · Urban Public Transportation</div>
+    <div class="passage">Several cities have recently <span class="inactive-blank">____</span> bike-sharing programs to give commuters more flexible transportation options. <mark class="active-blank">(27)</mark> fare prices remain affordable, public transit ridership tends to stay stable even during economic downturns. Many of the oldest subway lines in major cities <span class="inactive-blank">____</span> more than a century ago, long before today&#39;s population levels were even imagined. Public opinion in several surveys has shifted increasingly <span class="inactive-blank">____</span> expanding rail networks rather than building new highways. City planners argue that infrastructure investment <span class="inactive-blank">____</span> keep pace with population growth to avoid worsening congestion.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 27 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">Despite</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">Although</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">As long as</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;As long as&#39; (mientras/con tal de que) introduce una condición necesaria, seguida de cláusula completa. &#39;Despite&#39; exigiría un sustantivo y &#39;although&#39; introduciría un contraste, no una condición.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="27" hidden>
+    <div class="text-tag">Texto 6 de 8 · Urban Public Transportation</div>
+    <div class="passage">Several cities have recently <span class="inactive-blank">____</span> bike-sharing programs to give commuters more flexible transportation options. <span class="inactive-blank">____</span> fare prices remain affordable, public transit ridership tends to stay stable even during economic downturns. Many of the oldest subway lines in major cities <mark class="active-blank">(28)</mark> more than a century ago, long before today&#39;s population levels were even imagined. Public opinion in several surveys has shifted increasingly <span class="inactive-blank">____</span> expanding rail networks rather than building new highways. City planners argue that infrastructure investment <span class="inactive-blank">____</span> keep pace with population growth to avoid worsening congestion.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 28 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">have built</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">were built</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">was building</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Voz pasiva en pasado simple: &#39;were&#39; (sujeto plural, &#39;lines&#39;) + participio (&#39;built&#39;). &#39;Have built&#39; sería voz activa en presente perfecto, y &#39;was building&#39; no concuerda con el sujeto plural.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="28" hidden>
+    <div class="text-tag">Texto 6 de 8 · Urban Public Transportation</div>
+    <div class="passage">Several cities have recently <span class="inactive-blank">____</span> bike-sharing programs to give commuters more flexible transportation options. <span class="inactive-blank">____</span> fare prices remain affordable, public transit ridership tends to stay stable even during economic downturns. Many of the oldest subway lines in major cities <span class="inactive-blank">____</span> more than a century ago, long before today&#39;s population levels were even imagined. Public opinion in several surveys has shifted increasingly <mark class="active-blank">(29)</mark> expanding rail networks rather than building new highways. City planners argue that infrastructure investment <span class="inactive-blank">____</span> keep pace with population growth to avoid worsening congestion.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 29 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">in favor with</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">in favor to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">in favor of</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;in favor of something&#39;. &#39;In favor to&#39; y &#39;in favor with&#39; no son combinaciones válidas en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="29" hidden>
+    <div class="text-tag">Texto 6 de 8 · Urban Public Transportation</div>
+    <div class="passage">Several cities have recently <span class="inactive-blank">____</span> bike-sharing programs to give commuters more flexible transportation options. <span class="inactive-blank">____</span> fare prices remain affordable, public transit ridership tends to stay stable even during economic downturns. Many of the oldest subway lines in major cities <span class="inactive-blank">____</span> more than a century ago, long before today&#39;s population levels were even imagined. Public opinion in several surveys has shifted increasingly <span class="inactive-blank">____</span> expanding rail networks rather than building new highways. City planners argue that infrastructure investment <mark class="active-blank">(30)</mark> keep pace with population growth to avoid worsening congestion.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 30 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">needs to</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">need to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">needing to</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>El sujeto &#39;infrastructure investment&#39; es singular, así que el verbo lleva -s: &#39;needs to&#39;. &#39;Need to&#39; no concuerda con un sujeto singular, y &#39;needing to&#39; no puede ser el verbo principal de la cláusula.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="30" hidden>
+    <div class="text-tag">Texto 7 de 8 · Minimalism and Decluttering</div>
+    <div class="passage">Many people find it surprisingly difficult to <mark class="active-blank">(31)</mark> objects that carry sentimental value, even when they no longer serve a practical purpose. Minimalism isn&#39;t only about owning less; it&#39;s also about being intentional with what stays. <span class="inactive-blank">____</span>, complete minimalism isn&#39;t realistic or even desirable for everyone, since some level of comfort matters too. Surveys suggest that <span class="inactive-blank">____</span> people who declutter report feeling calmer within their own homes afterward. Some individuals remain particularly <span class="inactive-blank">____</span> collecting books or records, even while minimizing everything else. <span class="inactive-blank">____</span> items someone owns, the easier it generally becomes to keep a space organized.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 31 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">let out</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">let down</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">let go of</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Let go of&#39; significa desprenderse o soltar algo emocionalmente, encajando con el valor sentimental mencionado. &#39;Let down&#39; significa decepcionar a alguien, y &#39;let out&#39; significa dejar salir algo; ninguno tiene ese sentido de desapego.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="31" hidden>
+    <div class="text-tag">Texto 7 de 8 · Minimalism and Decluttering</div>
+    <div class="passage">Many people find it surprisingly difficult to <span class="inactive-blank">____</span> objects that carry sentimental value, even when they no longer serve a practical purpose. Minimalism isn&#39;t only about owning less; it&#39;s also about being intentional with what stays. <mark class="active-blank">(32)</mark>, complete minimalism isn&#39;t realistic or even desirable for everyone, since some level of comfort matters too. Surveys suggest that <span class="inactive-blank">____</span> people who declutter report feeling calmer within their own homes afterward. Some individuals remain particularly <span class="inactive-blank">____</span> collecting books or records, even while minimizing everything else. <span class="inactive-blank">____</span> items someone owns, the easier it generally becomes to keep a space organized.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 32 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">That said</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">Despite</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">Because of that</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;That said&#39; es una expresión fija e independiente para introducir un matiz después de una afirmación previa (= &#39;dicho esto&#39;). &#39;Despite&#39; necesitaría un sustantivo dentro de la misma oración, y &#39;because of that&#39; cambiaría la relación lógica hacia una causa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="32" hidden>
+    <div class="text-tag">Texto 7 de 8 · Minimalism and Decluttering</div>
+    <div class="passage">Many people find it surprisingly difficult to <span class="inactive-blank">____</span> objects that carry sentimental value, even when they no longer serve a practical purpose. Minimalism isn&#39;t only about owning less; it&#39;s also about being intentional with what stays. <span class="inactive-blank">____</span>, complete minimalism isn&#39;t realistic or even desirable for everyone, since some level of comfort matters too. Surveys suggest that <mark class="active-blank">(33)</mark> people who declutter report feeling calmer within their own homes afterward. Some individuals remain particularly <span class="inactive-blank">____</span> collecting books or records, even while minimizing everything else. <span class="inactive-blank">____</span> items someone owns, the easier it generally becomes to keep a space organized.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 33 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">a majority</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">majority of</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">the majority of</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;The majority of&#39; + sustantivo plural es la estructura fija y completa. &#39;A majority&#39; sin &#39;of&#39; no puede preceder directamente a otro sustantivo, y &#39;majority of&#39; sin el artículo &#39;the&#39; está incompleta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="33" hidden>
+    <div class="text-tag">Texto 7 de 8 · Minimalism and Decluttering</div>
+    <div class="passage">Many people find it surprisingly difficult to <span class="inactive-blank">____</span> objects that carry sentimental value, even when they no longer serve a practical purpose. Minimalism isn&#39;t only about owning less; it&#39;s also about being intentional with what stays. <span class="inactive-blank">____</span>, complete minimalism isn&#39;t realistic or even desirable for everyone, since some level of comfort matters too. Surveys suggest that <span class="inactive-blank">____</span> people who declutter report feeling calmer within their own homes afterward. Some individuals remain particularly <mark class="active-blank">(34)</mark> collecting books or records, even while minimizing everything else. <span class="inactive-blank">____</span> items someone owns, the easier it generally becomes to keep a space organized.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 34 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">fond for</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">fond of</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">fond to</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;fond of something&#39;. &#39;Fond to&#39; y &#39;fond for&#39; no son combinaciones válidas en inglés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="34" hidden>
+    <div class="text-tag">Texto 7 de 8 · Minimalism and Decluttering</div>
+    <div class="passage">Many people find it surprisingly difficult to <span class="inactive-blank">____</span> objects that carry sentimental value, even when they no longer serve a practical purpose. Minimalism isn&#39;t only about owning less; it&#39;s also about being intentional with what stays. <span class="inactive-blank">____</span>, complete minimalism isn&#39;t realistic or even desirable for everyone, since some level of comfort matters too. Surveys suggest that <span class="inactive-blank">____</span> people who declutter report feeling calmer within their own homes afterward. Some individuals remain particularly <span class="inactive-blank">____</span> collecting books or records, even while minimizing everything else. <mark class="active-blank">(35)</mark> items someone owns, the easier it generally becomes to keep a space organized.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 35 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">The less</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">The fewer</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">The least</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Items&#39; es un sustantivo contable en plural, así que la estructura de proporción doble usa &#39;the fewer&#39; (no &#39;the less&#39;, reservado para incontables). &#39;The least&#39; es superlativo y no encaja en esta construcción comparativa doble.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="35" hidden>
+    <div class="text-tag">Texto 8 de 8 · Plastic Pollution</div>
+    <div class="passage">Most plastic items <mark class="active-blank">(36)</mark> extremely slowly, sometimes taking hundreds of years to decompose fully in landfill conditions. <span class="inactive-blank">____</span> manufacturers redesign packaging to use biodegradable materials, ocean plastic levels are unlikely to decrease significantly. Currently, only <span class="inactive-blank">____</span> global plastic waste actually gets recycled, with the rest ending up in landfills or the environment. Single-use packaging is often considered <span class="inactive-blank">____</span> a large share of ocean pollution, particularly in coastal regions with limited waste management. Environmental groups argue that stronger international agreements <span class="inactive-blank">____</span> be introduced to hold companies accountable for plastic waste.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 36 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">break down</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">break out</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">break off</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Break down&#39; aquí significa descomponerse gradualmente. &#39;Break off&#39; significa separarse o interrumpir algo abruptamente, y &#39;break out&#39; significa estallar (una guerra, una enfermedad); ninguno coincide con el proceso de descomposición.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="36" hidden>
+    <div class="text-tag">Texto 8 de 8 · Plastic Pollution</div>
+    <div class="passage">Most plastic items <span class="inactive-blank">____</span> extremely slowly, sometimes taking hundreds of years to decompose fully in landfill conditions. <mark class="active-blank">(37)</mark> manufacturers redesign packaging to use biodegradable materials, ocean plastic levels are unlikely to decrease significantly. Currently, only <span class="inactive-blank">____</span> global plastic waste actually gets recycled, with the rest ending up in landfills or the environment. Single-use packaging is often considered <span class="inactive-blank">____</span> a large share of ocean pollution, particularly in coastal regions with limited waste management. Environmental groups argue that stronger international agreements <span class="inactive-blank">____</span> be introduced to hold companies accountable for plastic waste.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 37 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">Despite</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">Unless</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">Because</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Unless&#39; (a menos que) introduce una condición negativa necesaria para evitar el resultado descrito. &#39;Despite&#39; exigiría un sustantivo, y &#39;because&#39; cambiaría la relación lógica hacia una causa en vez de una condición.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="37" hidden>
+    <div class="text-tag">Texto 8 de 8 · Plastic Pollution</div>
+    <div class="passage">Most plastic items <span class="inactive-blank">____</span> extremely slowly, sometimes taking hundreds of years to decompose fully in landfill conditions. <span class="inactive-blank">____</span> manufacturers redesign packaging to use biodegradable materials, ocean plastic levels are unlikely to decrease significantly. Currently, only <mark class="active-blank">(38)</mark> global plastic waste actually gets recycled, with the rest ending up in landfills or the environment. Single-use packaging is often considered <span class="inactive-blank">____</span> a large share of ocean pollution, particularly in coastal regions with limited waste management. Environmental groups argue that stronger international agreements <span class="inactive-blank">____</span> be introduced to hold companies accountable for plastic waste.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 38 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">fraction of</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="true">
+        <span class="opt-letter">b)</span><span class="opt-text">a fraction of</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">a fraction</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;A fraction of&#39; + sustantivo es la estructura fija y completa para expresar una pequeña parte de un total. &#39;A fraction&#39; sin &#39;of&#39; y &#39;fraction of&#39; sin el artículo &#39;a&#39; están incompletas gramaticalmente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="38" hidden>
+    <div class="text-tag">Texto 8 de 8 · Plastic Pollution</div>
+    <div class="passage">Most plastic items <span class="inactive-blank">____</span> extremely slowly, sometimes taking hundreds of years to decompose fully in landfill conditions. <span class="inactive-blank">____</span> manufacturers redesign packaging to use biodegradable materials, ocean plastic levels are unlikely to decrease significantly. Currently, only <span class="inactive-blank">____</span> global plastic waste actually gets recycled, with the rest ending up in landfills or the environment. Single-use packaging is often considered <mark class="active-blank">(39)</mark> a large share of ocean pollution, particularly in coastal regions with limited waste management. Environmental groups argue that stronger international agreements <span class="inactive-blank">____</span> be introduced to hold companies accountable for plastic waste.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 39 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="true">
+        <span class="opt-letter">a)</span><span class="opt-text">responsible for</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">responsible to</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="false">
+        <span class="opt-letter">c)</span><span class="opt-text">responsible of</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>Colocación fija: &#39;responsible for something&#39;. &#39;Responsible of&#39; no es una combinación válida en inglés, y &#39;responsible to&#39; se usa para indicar ante quién se responde, no para lo que se es responsable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-index="39" hidden>
+    <div class="text-tag">Texto 8 de 8 · Plastic Pollution</div>
+    <div class="passage">Most plastic items <span class="inactive-blank">____</span> extremely slowly, sometimes taking hundreds of years to decompose fully in landfill conditions. <span class="inactive-blank">____</span> manufacturers redesign packaging to use biodegradable materials, ocean plastic levels are unlikely to decrease significantly. Currently, only <span class="inactive-blank">____</span> global plastic waste actually gets recycled, with the rest ending up in landfills or the environment. Single-use packaging is often considered <span class="inactive-blank">____</span> a large share of ocean pollution, particularly in coastal regions with limited waste management. Environmental groups argue that stronger international agreements <mark class="active-blank">(40)</mark> be introduced to hold companies accountable for plastic waste.</div>
+    <div class="exercise-card">
+      <div class="card-head">
+        <span class="ex-num">Pregunta 40 / 40</span>
+      </div>
+      <div class="q-options"><button type="button" class="opt" data-letter="a" data-correct="false">
+        <span class="opt-letter">a)</span><span class="opt-text">might</span>
+      </button>
+<button type="button" class="opt" data-letter="b" data-correct="false">
+        <span class="opt-letter">b)</span><span class="opt-text">can</span>
+      </button>
+<button type="button" class="opt" data-letter="c" data-correct="true">
+        <span class="opt-letter">c)</span><span class="opt-text">need to</span>
+      </button></div>
+      <div class="q-footer">
+        <button type="button" class="reveal-btn" data-state="hidden">Ver respuesta</button>
+        <div class="answer-panel" hidden>
+          <p class="justificacion"><span class="just-label">Justificación</span>&#39;Need to&#39; expresa una necesidad fuerte, coherente con el verbo &#39;argue&#39; (se argumenta que hacen falta acuerdos más estrictos). &#39;Can&#39; expresaría solo posibilidad y &#39;might&#39; sería demasiado tentativo para el tono de una demanda firme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <div class="pager">
+      <button type="button" class="pager-btn" id="prev-btn">&larr; Anterior</button>
+      <div class="pager-jump">
+        <span>Ir a la</span>
+        <input type="number" id="jump-input" min="1" max="40" value="1">
+        <span>/ 40</span>
+      </div>
+      <button type="button" class="pager-btn" id="next-btn">Siguiente &rarr;</button>
+    </div>
+  </main>
+
+  <footer>
+    Grupo 2 de 4 · 40 preguntas · Usa las flechas del teclado (&larr; &rarr;) para moverte.
+  </footer>
+
+<script>
+(function () {
+  var total = 40;
+  var current = 0;
+  var revealed = new Set();
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var prevBtn = document.getElementById('prev-btn');
+  var nextBtn = document.getElementById('next-btn');
+  var jumpInput = document.getElementById('jump-input');
+  var progressLabel = document.getElementById('progress-label');
+  var progressFill = document.getElementById('progress-fill');
+
+  function updateProgress() {
+    var pct = total ? Math.round((revealed.size / total) * 100) : 0;
+    progressLabel.textContent = revealed.size + ' / ' + total + ' revisadas';
+    progressFill.style.width = pct + '%';
+  }
+
+  function showPage(index) {
+    if (index < 0 || index >= total) return;
+    pages[current].hidden = true;
+    current = index;
+    pages[current].hidden = false;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    jumpInput.value = current + 1;
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  prevBtn.addEventListener('click', function () { showPage(current - 1); });
+  nextBtn.addEventListener('click', function () { showPage(current + 1); });
+
+  jumpInput.addEventListener('change', function () {
+    var val = parseInt(jumpInput.value, 10);
+    if (!isNaN(val) && val >= 1 && val <= total) {
+      showPage(val - 1);
+    } else {
+      jumpInput.value = current + 1;
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT') return;
+    if (e.key === 'ArrowRight') showPage(current + 1);
+    if (e.key === 'ArrowLeft') showPage(current - 1);
+  });
+
+  pages.forEach(function (page) {
+    var options = page.querySelectorAll('.opt');
+    options.forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        options.forEach(function (o) { o.classList.remove('selected'); });
+        opt.classList.add('selected');
+      });
+    });
+
+    var revealBtn = page.querySelector('.reveal-btn');
+    var panel = page.querySelector('.answer-panel');
+    var idx = page.getAttribute('data-index');
+
+    revealBtn.addEventListener('click', function () {
+      var isShown = revealBtn.getAttribute('data-state') === 'shown';
+      if (isShown) {
+        panel.hidden = true;
+        revealBtn.setAttribute('data-state', 'hidden');
+        revealBtn.textContent = 'Ver respuesta';
+        options.forEach(function (o) {
+          o.classList.remove('correct-reveal', 'incorrect-reveal');
+        });
+        return;
+      }
+      options.forEach(function (o) {
+        var isCorrect = o.getAttribute('data-correct') === 'true';
+        if (isCorrect) o.classList.add('correct-reveal');
+        if (o.classList.contains('selected') && !isCorrect) o.classList.add('incorrect-reveal');
+      });
+      panel.hidden = false;
+      revealBtn.setAttribute('data-state', 'shown');
+      revealBtn.textContent = 'Ocultar respuesta';
+
+      if (!revealed.has(idx)) {
+        revealed.add(idx);
+        updateProgress();
+      }
+    });
+  });
+
+  showPage(0);
+  updateProgress();
+})();
+</script>
+
+</body>
+</html>
